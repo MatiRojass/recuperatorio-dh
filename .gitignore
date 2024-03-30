@@ -1,3 +1,6 @@
+#vscode extension
+.vscode
+
 # Logs
 logs
 *.log

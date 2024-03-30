@@ -1,0 +1,18 @@
+{
+  "name": "recuperatorio-dh",
+  "version": "1.0.0",
+  "description": "Proyecto recuperatorio",
+  "main": "app.js",
+  "scripts": {
+    "start": "node ./src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./src/app.js"
+  },
+  "author": "Matias Rojas",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.19.2",
+    "nodemon": "^3.1.0"
+  }
+}
