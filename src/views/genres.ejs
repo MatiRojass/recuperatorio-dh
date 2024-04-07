@@ -48,10 +48,10 @@
     </header>
 
     <main class="mx-4 my-4">
-        <h2>Listado de Peliculas</h2>
+        <h2>Listado de Generos</h2>
         <ul >
-            <% for( let i = 0; i < movies.length; i++) { %>
-                <li><a href="/details/<%= movies[i].id %>"><%= movies[i].title %></a></li>
+            <% for( let i = 0; i < genres.length; i++) { %>
+                <li><a href="#"><%= genres[i].name %></a></li>
             <% } %>
         </ul>
     </main>
