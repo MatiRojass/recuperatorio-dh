@@ -5,7 +5,7 @@ const mainController = {
         db.Movies.findAll({
             order: [
                 ["title", "ASC"]
-            ]
+            ]  
         })
         .then(movies =>{
             // console.log(JSON.stringify(movies, null, 4))

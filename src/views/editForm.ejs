@@ -22,7 +22,10 @@
                 <div class="collapse navbar-collapse" id="navbarScroll">
                     <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Peliculas</a>
+                            <a class="nav-link" href="/">Peliculas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/genres">Generos</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -44,23 +47,35 @@
         </nav>
     </header>
 
-    <main class="mx-4">
-        <h2><%= movie.title %></h2>
-        <ul type="none">
-            <li>Rating: <%= movie.rating %></li>
-            <li>Premios: <%= movie.awards %></li>
-            <li>Fecha de Salida: <%= movie.release_date %></li>
-            <li>Duracion: <%= movie.length %>mins</li>
-            <li> <%= movie.genre ? "Género: " + movie.genre.name : "" %> </li>
-        </ul>
+    <main class="mx-4 my-4">
+        <h2>Editar Peliculas</h2>
+        <form class="mx-5" action="/<%= movie.id %>/edit" method="POST">
+            <div class="mb-3">
+                <label for="title" class="form-label">Titulo</label>
+                <input type="text" class="form-control" id="title" name="title" placeholder="Ej: Hotel Transilvania" value="<%= movie.title %>">
+            </div>
+            <div class="mb-3">
+                <label for="rating" class="form-label">Rating</label>
+                <input type="text" class="form-control" id="rating" pattern="[0-9]+([.,][0-9]+)?" name="rating" value="<%= movie.rating %>">
+            </div>
+            <div class="mb-3">
+                <label for="awards" class="form-label">Premios</label>
+                <input type="number" class="form-control" id="awards" name="awards" value="<%= movie.awards %>">
+            </div>
+            <div class="mb-3">
+                <label for="release_date" class="form-label">Fecha de estreno</label>
+                <input type="date" class="form-control" id="release_date" name="release_date" value="<%= movie.release_date %>">
+            </div>
+            <div class="mb-3">
+                <label for="length" class="form-label">Duracion</label>
+                <input type="number" class="form-control" id="length" name="length" placeholder="Ej: 120" value="<%= movie.length %>">
+            </div>
+            <button type="submit" class="btn btn-primary">Editar</button>
+        </form>
 
-        <h3>Actores</h3>
-        <ol>
-            <% for( let i = 0; i < movie.actors.length; i++ ) { %>
-                <li><%= movie.actors[i].first_name + " " + movie.actors[i].last_name %></li>
-            <% } %>
-        </ol>
-        <a href="/<%= movie.id %>/edit">Editar</a>
+        <form class="mx-5 my-3" action="/<%= movie.id %>/delete" method="POST">
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+        </form>
     </main>
     <hr>
     <footer>

@@ -25,12 +25,11 @@ module.exports = (sequelize, DataTypes) => {
         release_date: {
             type: DataTypes.DATEONLY,
             allowNull: false,
-            get() {
-                const releaseDate = this.getDataValue('release_date');
-                // Formatear la fecha y hora a DD/MM/YYYY HH:MM:SS
-                // Formatear la fecha y hora a DD/MM/YYYY HH:MM:SS
-                return releaseDate ? `${String(releaseDate.getDate()).padStart(2, '0')}/${String(releaseDate.getMonth() + 1).padStart(2, '0')}/${releaseDate.getFullYear()} ${releaseDate.toLocaleTimeString('es-ES')}` : null;
-            },
+            // get() {
+            //     const releaseDate = this.getDataValue('release_date');
+                
+            //     return releaseDate ? `${String(releaseDate.getDate()).padStart(2, '0')}/${String(releaseDate.getMonth() + 1).padStart(2, '0')}/${releaseDate.getFullYear()}` : null; 
+            // },
         },
         length: {
             type: DataTypes.INTEGER,
@@ -51,5 +50,21 @@ module.exports = (sequelize, DataTypes) => {
     
     const Movie = sequelize.define(alias, cols, config)
 
+    Movie.associate = function(models){
+        Movie.belongsTo(models.Genres, {
+            as: "genre",
+            foreignKey: "genre_id"
+        }),
+
+        Movie.belongsToMany(models.Actors, {
+            as: "actors",
+            through: "actor_movie",
+            foreignKey: "movie_id",
+            otherKey: "actor_id",
+            timestamps: false,
+        })
+    }
+
+    
     return Movie
 }

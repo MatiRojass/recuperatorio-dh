@@ -1,12 +1,23 @@
 const express = require("express")
-const Router = express.Router()
+const router = express.Router()
 const mainController = require("../controllers/mainController")
 const moviesController = require("../controllers/moviesController")
 
-Router.get("/", mainController.index)
+router.get("/", mainController.index)
 
-Router.get("/details/:id", moviesController.detail)
-Router.get("/genres", moviesController.genres)
-Router.get("/create", moviesController.createForm)
+router.get("/genres", moviesController.genres)
 
-module.exports = Router
+//crear pelicula
+router.get("/create", moviesController.createForm)
+router.post("/create", moviesController.create)
+
+//editar pelicula
+router.get("/:id/edit", moviesController.editForm)
+router.post("/:id/edit", moviesController.update)
+
+//eliminar pelicula
+router.post("/:id/delete", moviesController.delete)
+
+router.get("/:id", moviesController.detail)
+
+module.exports = router
