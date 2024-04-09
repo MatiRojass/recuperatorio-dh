@@ -1,43 +1,70 @@
 const db = require("../database/models")
+const { validationResult } = require("express-validator")
 
 
 const mainController = {
-    detail: async (req, res)=>{
+    index: (req, res) => {
+        db.Movies.findAll({
+            order: [
+                ["title", "ASC"]
+            ]
+        })
+            .then(movies => {
+                // console.log(JSON.stringify(movies, null, 4))
+                res.render("index", { movies: movies, session: req.session })
+            })
+            .catch(error => {
+                console.error("Error")
+            })
+
+    },
+    detail: async (req, res) => {
         try {
             const movie = await db.Movies.findByPk(req.params.id, {
                 include: [{ association: "genre" }, { association: "actors" }]
             })
-            
-            res.render("detail", {movie: movie})
+            res.render("detail", { movie, session: req.session })
         } catch (error) {
             console.error(error)
         }
-        
-    }, 
+
+    },
 
     genres: async (req, res) => {
         try {
             const genres = await db.Genres.findAll()
-            
-            res.render("genres", {genres: genres})
+
+            res.render("genres", { genres: genres, session: req.session })
         } catch (error) {
             console.error(error)
         }
     },
 
-    createForm: async (req, res)=>{
+    createForm: async (req, res) => {
 
         try {
             const genres = await db.Genres.findAll()
 
-            res.render("createForm", { genres })
+            res.render("createForm", { genres, session: req.session })
 
         } catch (error) {
             console.error(error)
         }
     },
 
-    create: (req, res)=>{
+    create: async (req, res) => {
+
+        const validations = validationResult(req)
+
+        if (validations.errors.length > 0) {
+            try {
+                const genres = await db.Genres.findAll()
+                return res.render("createForm", { errors: validations.mapped(), old: req.body, genres, session: req.session })
+            } catch (error) {
+                console.error(error)
+            }
+        }
+
         db.Movies.create({
             title: req.body.title,
             rating: req.body.rating,
@@ -50,16 +77,39 @@ const mainController = {
         res.redirect("/")
     },
 
-    editForm: async (req, res)=>{
-        try {
-            const movie = await db.Movies.findByPk(req.params.id)
-            res.render("editForm", {movie: movie})
-        } catch (error) {
-            console.error(error)
-        }
+    editForm: (req, res) => {
+
+        const genres = db.Genres.findAll()
+        const movie = db.Movies.findByPk(req.params.id)
+
+        Promise.all([genres, movie])
+            .then(([genres, movie]) => {
+                res.render("editForm", { movie: movie, genres: genres, session: req.session })
+            })
+            .catch(error => {
+                console.error(error)
+            })
+
     },
 
-    update: (req, res)=>{
+    update: (req, res) => {
+
+        const validations = validationResult(req)
+
+        if (validations.errors.length > 0) {
+            const genres = db.Genres.findAll()
+            const movie = db.Movies.findByPk(req.params.id)
+
+            Promise.all([genres, movie])
+                .then(([genres, movie]) => {
+                    return res.render("editForm", { errors: validations.mapped(), old: req.body, movie: movie, genres: genres, session: req.session })
+                })
+                .catch(error => {
+                    console.error(error)
+                })
+        
+        }
+
         db.Movies.update({
             title: req.body.title,
             rating: req.body.rating,

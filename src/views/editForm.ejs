@@ -11,56 +11,37 @@
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/"><strong>PelisDH</strong></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
-                    aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarScroll">
-                    <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Peliculas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/genres">Generos</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                Cuenta
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Ingresar</a></li>
-                                <li><a class="dropdown-item" href="#">Registrarse</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                </div>
-            </div>
-        </nav>
-    </header>
+    <%- include('./partials/header') %>
 
     <main class="mx-4 my-4">
         <h2>Editar Peliculas</h2>
-        <form class="mx-5" action="/<%= movie.id %>/edit" method="POST">
+        <form class="mx-5" action="/movie/<%= movie.id %>/edit" method="POST">
             <div class="mb-3">
                 <label for="title" class="form-label">Titulo</label>
                 <input type="text" class="form-control" id="title" name="title" placeholder="Ej: Hotel Transilvania" value="<%= movie.title %>">
+                <% if(locals.errors && errors.title){%>
+                    <small style="color: red;">
+                        <%= errors.title.msg %>
+                    </small>
+                <% } %>
             </div>
             <div class="mb-3">
                 <label for="rating" class="form-label">Rating</label>
                 <input type="text" class="form-control" id="rating" pattern="[0-9]+([.,][0-9]+)?" name="rating" value="<%= movie.rating %>">
+                <% if(locals.errors && errors.rating){%>
+                    <small style="color: red;">
+                        <%= errors.rating.msg %>
+                    </small>
+                <% } %>
             </div>
             <div class="mb-3">
                 <label for="awards" class="form-label">Premios</label>
                 <input type="number" class="form-control" id="awards" name="awards" value="<%= movie.awards %>">
+                <% if(locals.errors && errors.awards){%>
+                    <small style="color: red;">
+                        <%= errors.awards.msg %>
+                    </small>
+                <% } %>
             </div>
             <div class="mb-3">
                 <label for="release_date" class="form-label">Fecha de estreno</label>
@@ -69,11 +50,27 @@
             <div class="mb-3">
                 <label for="length" class="form-label">Duracion</label>
                 <input type="number" class="form-control" id="length" name="length" placeholder="Ej: 120" value="<%= movie.length %>">
+                <% if(locals.errors && errors.length){%>
+                    <small style="color: red;">
+                        <%= errors.length.msg %>
+                    </small>
+                <% } %>
+            </div>
+            <div class="mb-3">
+                <label for="genres">Genero</label>
+                <select class="form-select" aria-label="Default select example" name="genre">
+                    <% for( let i = 0; i < genres.length; i++ ) { %>
+                        <% if (genres[i].id == movie.genre_id) { %>
+                            <option value="<%= genres[i].id %>" selected><%= genres[i].name %></option>
+                        <% } %>
+                        <option value="<%= genres[i].id %>"><%= genres[i].name %></option>
+                    <% } %>
+                </select>
             </div>
             <button type="submit" class="btn btn-primary">Editar</button>
         </form>
 
-        <form class="mx-5 my-3" action="/<%= movie.id %>/delete" method="POST">
+        <form class="mx-5 my-3" action="/movie/<%= movie.id %>/delete" method="POST">
             <button type="submit" class="btn btn-danger">Eliminar</button>
         </form>
     </main>
