@@ -1,45 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+			crossorigin="anonymous"
+		/>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+		<title>Peliculas</title>
+	</head>
 
-    <title>Peliculas</title>
-</head>
+	<body>
+		<%- include('./partials/header') %>
 
-<body>
-    <%- include('./partials/header') %>
+		<main class="mx-4 my-4">
+			<!-- Si hay una sesión iniciada, muestra el nombre del usuario -->
+			<% if (typeof session !== 'undefined' && session.user) { %>
+			<p>Bienvenido <%= session.user.name %></p>
+			<% } else { %>
+			<!-- Si no hay sesión iniciada, muestra un mensaje de inicio de sesión -->
+			<p>Inicia sesión para acceder al contenido</p>
+			<% } %>
 
-    <main class="mx-4 my-4">
-            <!-- Si hay una sesión iniciada, muestra el nombre del usuario -->
-        <% if (typeof session !== 'undefined' && session.user) { %>
-            <p>Bienvenido <%= session.user.name %></p>
-        <% } else { %>
-            <!-- Si no hay sesión iniciada, muestra un mensaje de inicio de sesión -->
-            <p>Inicia sesión para acceder al contenido</p>
-        <% } %>
+			<div class="d-flex justify-content-between">
+				<h2>Listado de Peliculas</h2>
+				<a href="/create">Crear pelicula</a>
+			</div>
+			<ul>
+				<% for( let i = 0; i < movies.length; i++) { %>
+				<li><a href="/movie/<%= movies[i].id %>"><%= movies[i].title %></a></li>
+				<% } %>
+			</ul>
+		</main>
+		<hr />
 
-        <div class="d-flex justify-content-between">
-            <h2>Listado de Peliculas</h2>
-            <a href="/create">Crear pelicula</a>
-        </div>
-        <ul >
-            <% for( let i = 0; i < movies.length; i++) { %>
-                <li><a href="/movie/<%= movies[i].id %>"><%= movies[i].title %></a></li>
-            <% } %>
-        </ul>
-    </main>
-    <hr>
-    <footer>
-        <h2>Footer</h2>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-</body>
-
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+			crossorigin="anonymous"
+		></script>
+	</body>
 </html>
