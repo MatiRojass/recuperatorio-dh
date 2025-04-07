@@ -25,5 +25,8 @@ app.listen(PORT, ()=>{
     console.log(`\tURL: http://localhost:${PORT}`)
 })
 
+
+
+
 const mainRouter = require("./routes/main.routes")
 app.use("/", mainRouter)

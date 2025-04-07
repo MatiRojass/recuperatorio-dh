@@ -13,7 +13,7 @@ router.get("/", moviesController.index)
 router.get("/login", usersController.loginForm)
 router.post("/login", usersController.login)
 router.get("/register", usersController.registerForm)
-router.post("/register", registerValidations, usersController.register)
+router.put("/register", registerValidations, usersController.register)
 router.get("/check", usersController.check)
 router.get("/logout", usersController.logout)
 
@@ -26,10 +26,10 @@ router.post("/create", moviesValidations, moviesController.create)
 
 //editar pelicula
 router.get("/movie/:id/edit", authMiddleware, moviesController.editForm)
-router.post("/movie/:id/edit", moviesValidations, moviesController.update)
+router.put("/movie/:id/edit", moviesValidations, moviesController.update)
 
 //eliminar pelicula
-router.post("/movie/:id/delete", authMiddleware,moviesController.delete)
+router.delete("/movie/:id/delete", authMiddleware,moviesController.delete)
 
 router.get("/movie/:id", moviesController.detail)
 
